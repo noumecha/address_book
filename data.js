@@ -1,5 +1,5 @@
 export default {
-    address: [
+    addresses: [
         {
             id: 1,
             firstname: 'John',
@@ -31,6 +31,14 @@ export default {
             street: '77 Blue Street Ocean',
             city: 'LiberCity',
             country: 'NoWay',
+        },
+        {
+            id: 5,
+            firstname: 'Avatar',
+            lastname: 'Avatar',
+            street: 'Persona Land',
+            city: 'Alone City',
+            country: 'Freedom',
         }
     ]
 }
