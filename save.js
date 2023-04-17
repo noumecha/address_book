@@ -1,4 +1,4 @@
-export function saveAdress(addresses, address) {
+export function saveAddress(addresses, address) {
     if (address.id) {
         const index = addresses.findIndex((adr) => {
             return adr.id === parseInt(address.id, 10)

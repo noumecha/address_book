@@ -39,6 +39,6 @@ export default {
             street: 'Persona Land',
             city: 'Alone City',
             country: 'Freedom',
-        }
-    ]
+        },
+    ],
 }

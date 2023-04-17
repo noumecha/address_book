@@ -1,83 +1,25 @@
-import { request, Server } from 'http'
+import { createServer } from 'http'
 import data from './data.js'
 import { getList } from './list.js'
 import { deleteAddress } from './delete.js'
-import { getForm } from './form.js'
-import { parse } from 'querystring'
-import { saveAdress } from './save.js'
-import { readFile, rename } from 'fs'
-import formidable from 'formidable'
 
-const server = new Server
-
-server.on('request', (req, res) => {
+createServer((req, res) => {
+    let responseBody
     const parts = req.url.split('/')
     if (parts.includes('delete')) {
         data.addresses = deleteAddress(data.addresses, parts[2])
         redirect(res, '/')
-    } else if (parts.includes('new')) {
-        send(res, getForm())
-    } else if (parts.includes('edit')) {
-        send(res, getForm(data.addresses, parts[2]))
-    } else if (parts.includes('save') && req.method === 'POST') {
-        let body = ''
-        req.on('readable', () => {
-            const data = req.read()
-            body += data !== null ? data : ''
-        })
-        req.on('end', () => {
-            const address = parse(body)
-            data.addresses = saveAdress(data.addresses, address)
-            //console.log('content of new save value : ', address.firstname)
-            redirect(res, '/')
-        })
-    } else if (req.url === '/style.css') {
-        readFile('public/style.css', 'utf8', (err, data) => {
-            if (err) {
-                res.statusCode = 404;
-                res.end()
-            } else {
-                res.end(data)
-            }
-        })
-    } else if (parts.includes('save') && request.method === 'POST') {
-        const form = new formidable.IncomingForm()
-        form.parse(request, (err, address, files) => {
-            if (files.upload) {
-                rename(files.upload.path, `public/assets/${files.upload.name}`, () => {
-                    address['file'] = `/assets/${files.upload.name}`
-                })
-            }
-        })
-        data.addresses = saveAdress(data.addresses, address)
-        redirect(res, '/')
-    } else if (parts.includes('assets')) {
-        readFile(`public${request.url.replaceAll('%20', ' ')}`, (err, data) => {
-            if (err) {
-                res.statusCode = 404
-                res.end()
-            } else {
-                res.end(data)
-            }
-        })
-    } else {
-        send(res, getList(data.addresses))
     }
+    else {
+        res.writeHead(200, {'content-type' : 'text/html'});
+        responseBody = getList(data.addresses)
+        res.end(responseBody)
+    }
+}).listen(8080, () => {
+    console.log('Address book readable at http://localhost:8080')
 })
-
-function send(res, responseBody) {
-    res.statusCode = 200
-    res.setHeader = ('content-type', 'text/html')
-    res.end(responseBody)
+function redirect(res, to)
+{
+    res.writeHead(302, {location : '/', 'content-type' : 'text/plain'})
+    res.end('302 Redirecting to')
 }
-
-function redirect(res, to) {
-    res.writeHead(302, { location: '/', 'content-type': 'text/plain' })
-    res.end(`302 Redirecting to /`)
-}
-
-server.on('listening', () => {
-    console.log(`Adress book project start via http://localhost:${server.address().port}`)
-})
-
-server.listen(8080)
