@@ -37,8 +37,10 @@ export function getList(addresses) {
                     ${addresses.map(createRow).join('')}
                 </tbody>
                 </tfoot>
-                    <th colspan="8">address book v1</th>
-                    <th colspan="1"><a href="/new" style="text-transform:capitalize;text-decoration:none;color:white;">new</a></th>
+                    <tr>
+                        <th colspan="7">address book v1</th>
+                        <th colspan="2"><a href="/new" style="text-transform:capitalize;text-decoration:none;">new</a></th>
+                    </tr>
                 </tfoot>
             </table>
         </body>

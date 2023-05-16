@@ -61,6 +61,6 @@ export function getForm(addresses, id) {
             <div>
             </form>
         </body>
-    </html>`
-    return form
+    </html>`;
+    return form;
 }
