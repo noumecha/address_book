@@ -1,11 +1,11 @@
 export function getForm(addresses, id) {
     let address = {
-        id: '',
-        firstname: '',
-        lastname: '',
-        street: '',
-        city: '',
-        country: '',
+        id: "6",
+        firstname: "John",
+        lastname: "Spaker",
+        street: "77 shit",
+        city: "Bulevard Island",
+        country: "Free States of Liberta",
     }
     if (id) {
         address = addresses.find((adr) => adr.id === parseInt(id, 10))
